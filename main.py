@@ -2,8 +2,9 @@
 # Kivy Tic Tac Toe with player name & avatar selection screen
 
 import os
+from kivy.config import Config
 
-#Keep before kivy imports for window sizes to apply correctly
+#Keep before remaining kivy imports for window sizes to apply correctly
 # Simulate a 1080x2340 Android phone (portrait mode)
 Config.set('graphics', 'width', '360')
 Config.set('graphics', 'height', '780')
@@ -45,15 +46,17 @@ class SetupScreen(Screen):
 
         p1_avatars = BoxLayout(orientation='horizontal', size_hint=(1, 0.4))
         self.p1_choice = None
-        self.avatar_images = []
+        self.p1_avatar_buttons = [] # Used for showing the chosen avatar image
+        
         img_dir = os.path.join(os.getcwd(), "images")
         for img in os.listdir(img_dir):
             if img.lower().endswith((".png", ".jpg", ".jpeg")):
-                avatar = Button(background_normal=os.path.join(img_dir, img),
+                avatar_button = Button(background_normal=os.path.join(img_dir, img),
                                 background_down=os.path.join(img_dir, img))
-                avatar.bind(on_release=lambda inst, path=img: self.set_avatar(1, path))
-                self.avatar_images.append(avatar)
-                p1_avatars.add_widget(avatar)
+                # On release of the avatar image, set the avatar for player 1 to the selected one
+                avatar_button.bind(on_release=lambda inst, path=img, btn=avatar_button: self.set_avatar(1, path, btn))
+                self.p1_avatar_buttons.append(avatar_button)
+                p1_avatars.add_widget(avatar_button)
         p1_box.add_widget(p1_avatars)
         layout.add_widget(p1_box)
 
@@ -66,12 +69,14 @@ class SetupScreen(Screen):
 
         p2_avatars = BoxLayout(orientation='horizontal', size_hint=(1, 0.4))
         self.p2_choice = None
+        self.p2_avatar_buttons = [] # Used for showing the chosen avatar image
         for img in os.listdir(img_dir):
             if img.lower().endswith((".png", ".jpg", ".jpeg")):
-                avatar = Button(background_normal=os.path.join(img_dir, img),
+                avatar_button = Button(background_normal=os.path.join(img_dir, img),
                                 background_down=os.path.join(img_dir, img))
-                avatar.bind(on_release=lambda inst, path=img: self.set_avatar(2, path))
-                p2_avatars.add_widget(avatar)
+                avatar_button.bind(on_release=lambda inst, path=img, btn=avatar_button: self.set_avatar(2, path, btn)) 
+                self.p2_avatar_buttons.append(avatar_button)
+                p2_avatars.add_widget(avatar_button)
         p2_box.add_widget(p2_avatars)
         layout.add_widget(p2_box)
 
@@ -81,11 +86,20 @@ class SetupScreen(Screen):
 
         self.add_widget(layout)
 
-    def set_avatar(self, player, img_path):
+    def set_avatar(self, player, img_path, button):
         if player == 1:
             self.p1_choice = img_path
+            # Reset all button colors for player 1
+            for btn in self.p1_avatar_buttons:
+                btn.background_color = (1, 1, 1, 1)
+            # Highlight selected button
+            button.background_color = (0.5, 1, 0.5, 1)
         else:
             self.p2_choice = img_path
+            for btn in self.p2_avatar_buttons:
+                btn.background_color = (1, 1, 1, 1)
+            button.background_color = (0.5, 1, 0.5, 1)
+
 
     def start_game(self, instance):
         p1 = self.p1_name.text.strip() or "Player 1"
