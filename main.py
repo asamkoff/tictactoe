@@ -1,6 +1,17 @@
 # main.py
 # Kivy Tic Tac Toe with player name & avatar selection screen
 
+import os
+
+#Keep before kivy imports for window sizes to apply correctly
+# Simulate a 1080x2340 Android phone (portrait mode)
+Config.set('graphics', 'width', '360')
+Config.set('graphics', 'height', '780')
+Config.set('graphics', 'resizable', False)
+
+# Optional: lock orientation (portrait)
+Config.set('graphics', 'orientation', 'portrait')
+
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
@@ -11,7 +22,8 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.properties import StringProperty, ObjectProperty
 from kivy.clock import Clock
-import os
+from kivy.config import Config
+
 
 # --------- Setup Screen ---------
 class SetupScreen(Screen):
