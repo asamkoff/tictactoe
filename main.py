@@ -21,7 +21,7 @@ class SetupScreen(Screen):
 
         layout = BoxLayout(orientation='vertical', spacing=10, padding=10)
 
-        title = Label(text="🎮 Tic Tac Toe Setup", font_size='28sp', size_hint=(1, 0.1))
+        title = Label(text="Tic Tac Toe Setup", font_size='28sp', size_hint=(1, 0.1))
         layout.add_widget(title)
 
         # Player 1 section
@@ -113,7 +113,7 @@ class TicTacToeGrid(GridLayout):
                 return
             instance.text = self.current_symbol
             if self.check_winner(self.current_symbol):
-                self.status_label.text = f"{self.current_name} wins! 🏆"
+                self.status_label.text = f"{self.current_name} wins!"
                 self.running = False
                 return
             if all(b.text != '' for b in self.buttons):
