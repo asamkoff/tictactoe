@@ -32,6 +32,12 @@ MANIFEST
 *.manifest
 *.spec
 
+#Buildozer / Android build output
+bin/
+.buildozer/
+.gradle/
+*.pyc
+
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
